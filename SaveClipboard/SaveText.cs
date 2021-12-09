@@ -35,7 +35,7 @@ namespace SaveClipboard
                     }
                     else
                     {
-                        ArgumentType argument = ArgumentType.fileName;
+                        ArgumentType argument = ArgumentType.name;
                         string line = args[i];
                         _arguments.Add(argument, line);
                     }
@@ -55,13 +55,13 @@ namespace SaveClipboard
                 }
 
                 // generate file name
-                if (!_arguments.ContainsKey(ArgumentType.fileName))
+                if (!_arguments.ContainsKey(ArgumentType.name))
                 {
                     _fileName = getDefaultFileName();
                 }
                 else
                 {
-                    _fileName = validateFileName(_arguments[ArgumentType.fileName]);
+                    _fileName = validateFileName(_arguments[ArgumentType.name]);
                 }
                 #endregion
             }
@@ -108,13 +108,10 @@ namespace SaveClipboard
         /// <returns>Trimmed version of <paramref name="input"/> string, without extension at the end.</returns>
         private static string validateFileName(string input)
         {
-            if (!input.EndsWith($".{_extension}"))
-            {
-                int i = input.LastIndexOf('.');
-                if (i == -1)
-                    return input;
-                input = input.Remove(i);
-            }
+            int i = input.LastIndexOf('.');
+            if (i == -1)
+                return input;
+            input = input.Remove(i);
             return input;
         }
         #endregion

@@ -12,7 +12,7 @@ namespace SaveClipboard
         {
             if (args.Count() > 0 && args.Contains("-h"))
             {
-                help();
+                UI.help();
                 return;
             }
             try
@@ -29,22 +29,14 @@ namespace SaveClipboard
                 }
                 else
                 {
-                    Console.WriteLine("Hmm... Clipboard seems to be empty.");
+                    UI.NoCP();
                     return;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
-                Console.WriteLine(" for help, type \"-h\".");
+                UI.ErrorMsg(ex);
             }
-        }
-
-        static void help()
-        {
-            Console.WriteLine("SaveClipboard by iQuerz:");
-            Console.WriteLine(" list of available commands:");
-            Console.WriteLine(" TBD!");
         }
     }
 }

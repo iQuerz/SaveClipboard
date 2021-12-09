@@ -3,6 +3,6 @@
     public enum ArgumentType
     {
         format,
-        fileName
+        name
     }
 }
