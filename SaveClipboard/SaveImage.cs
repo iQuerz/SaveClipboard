@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace SaveClipboard
 {
@@ -20,8 +21,8 @@ namespace SaveClipboard
             if (args.Count() == 0)
             {
                 _fileName = getDefaultFileName();
-                _format = ImageFormat.Png;
                 _extension = "png";
+                _format = ImageFormat.Png;
             }
             else
             {
@@ -51,13 +52,20 @@ namespace SaveClipboard
                 // generate extension and format
                 if (!_arguments.ContainsKey(ArgumentType.format))
                 {
-                    _format = ImageFormat.Png;
                     _extension = "png";
+                    _format = ImageFormat.Png;
+
+                    // this allows the user to call "savecp img.gif"
+                    if (_arguments.ContainsKey(ArgumentType.name))
+                    {
+                        _extension = getExtensionFromName(_arguments[ArgumentType.name]);
+                        _format = validatePictureFormat(_extension);
+                    }
                 }
                 else
                 {
-                    _format = validatePictureFormat(_arguments[ArgumentType.format]);
                     _extension = _arguments[ArgumentType.format].ToLower();
+                    _format = validatePictureFormat(_extension);
                 }
 
                 // generate file name
@@ -72,8 +80,9 @@ namespace SaveClipboard
                 #endregion
             }
 
-            // save the file
+            // save the file and notify the console.
             image.Save($"{_fileName}.{_extension}", _format);
+            UI.savedFileNotification($"{_fileName}.{_extension}");
         }
 
         #region Validations
@@ -146,6 +155,15 @@ namespace SaveClipboard
             int i = 0;
             while (File.Exists($"image{i++}.png")) { }
             return $"image{i}";
+        }
+        private static string getExtensionFromName(string name)
+        {
+            string res = "";
+            for (int i = name.LastIndexOf('.') + 1; i < name.Length; i++)
+            {
+                res += name[i];
+            }
+            return res;
         }
         #endregion
     }

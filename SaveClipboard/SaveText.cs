@@ -48,6 +48,12 @@ namespace SaveClipboard
                 if (!_arguments.ContainsKey(ArgumentType.format))
                 {
                     _extension = "txt";
+
+                    // this allows the user to call "savecp code.txt"
+                    if (_arguments.ContainsKey(ArgumentType.name))
+                    {
+                        _extension = getExtensionFromName(_arguments[ArgumentType.name]);
+                    }
                 }
                 else
                 {
@@ -66,8 +72,9 @@ namespace SaveClipboard
                 #endregion
             }
 
-            // save the file
+            // save the file and notify the console.
             File.WriteAllText($"{_fileName}.{_extension}", text);
+            UI.savedFileNotification($"{_fileName}.{_extension}");
         }
 
         #region Validations
@@ -121,7 +128,16 @@ namespace SaveClipboard
         {
             int i = 0;
             while (File.Exists($"text{i++}.txt")) { }
-            return $"text{i}";
+            return $"text{--i}";
+        }
+        private static string getExtensionFromName(string name)
+        {
+            string res = "";
+            for(int i = name.LastIndexOf('.') +1; i < name.Length; i++)
+            {
+                res += name[i];
+            }
+            return res;
         }
         #endregion
     }
