@@ -14,7 +14,7 @@ This is a light program that I use to save clipboard contents using terminal.
     Saves a picture named app.jpg inside working directory.  
   ### "savecp -format png"  
     Saves a picture named image.png inside working directory.  
-  ### "savecp C:\app.gif"  
+  ### "savecp C:\\\app.gif"  
     Saves a picture named app.gif inside the specified absolute path.  
   ### "savecp pic"  
     Saves a picture named pic.png inside the working directory.
