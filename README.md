@@ -29,4 +29,4 @@ This is a light program that I use to save clipboard contents using terminal.
   * -format \<extension\>  
     *Specifies the file extension.*  
   * -h  
-  *Shows this text. Can be specified anywhere in the command.*  
+  *Shows help. Can be specified anywhere in the command.*  
