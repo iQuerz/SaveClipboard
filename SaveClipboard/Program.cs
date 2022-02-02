@@ -12,26 +12,29 @@ namespace SaveClipboard
         {
             if (args.Count() > 0 && args.Contains("-h"))
             {
-                UI.help();
+                if(args.Contains("-h") || args.Contains("?") || args.Contains("help"))
+                UI.HelpPanel();
                 return;
             }
             try
             {
+                string fileName;
                 if (Clipboard.ContainsImage())
                 {
                     Image image = Clipboard.GetImage();
-                    SaveImage.save(args, image);
+                    fileName = SaveImage.save(args, image);
                 }
                 else if (Clipboard.ContainsText())
                 {
                     string text = Clipboard.GetText();
-                    SaveText.save(args, text);
+                    fileName = SaveText.save(args, text);
                 }
                 else
                 {
                     UI.NoCP();
                     return;
                 }
+                UI.SavedFileNotification(fileName);
             }
             catch (Exception ex)
             {

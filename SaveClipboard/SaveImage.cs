@@ -16,7 +16,14 @@ namespace SaveClipboard
         private static string _extension;
         private static ImageFormat _format;
 
-        public static void save(string[] args, Image image)
+
+        /// <summary>
+        /// Generates filename from arguments and saves the image.
+        /// </summary>
+        /// <param name="args">Arguments from the executable call.</param>
+        /// <param name="image">Image from clipboard to be saved.</param>
+        /// <returns>Saved filename.</returns>
+        public static string save(string[] args, Image image)
         {
             if (args.Count() == 0)
             {
@@ -44,7 +51,6 @@ namespace SaveClipboard
                         string line = args[i];
                         _arguments.Add(argument, line);
                     }
-
                 }
                 #endregion
 
@@ -56,7 +62,7 @@ namespace SaveClipboard
                     _format = ImageFormat.Png;
 
                     // this allows the user to call "savecp img.gif"
-                    if (_arguments.ContainsKey(ArgumentType.name))
+                    if (_arguments.ContainsKey(ArgumentType.name) && _arguments[ArgumentType.name].Contains("."))
                     {
                         _extension = getExtensionFromName(_arguments[ArgumentType.name]);
                         _format = validatePictureFormat(_extension);
@@ -82,10 +88,12 @@ namespace SaveClipboard
 
             // save the file and notify the console.
             image.Save($"{_fileName}.{_extension}", _format);
-            UI.savedFileNotification($"{_fileName}.{_extension}");
+            return $"{_fileName}.{_extension}";
         }
 
+
         #region Validations
+
         /// <summary>
         /// Validates text format of <paramref name="input"/> string.
         /// </summary>
@@ -133,6 +141,7 @@ namespace SaveClipboard
             return format;
         }
 
+
         /// <summary>
         /// Validates the file name inside <paramref name="input"/> string.
         /// </summary>
@@ -150,12 +159,14 @@ namespace SaveClipboard
         #endregion
 
         #region Other
+
         private static string getDefaultFileName()
         {
             int i = 0;
             while (File.Exists($"image{i++}.png")) { }
             return $"image{i}";
         }
+
         private static string getExtensionFromName(string name)
         {
             string res = "";
@@ -165,6 +176,7 @@ namespace SaveClipboard
             }
             return res;
         }
+
         #endregion
     }
 }

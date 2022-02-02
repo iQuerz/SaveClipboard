@@ -12,7 +12,14 @@ namespace SaveClipboard
         private static string _fileName;
         private static string _extension;
 
-        public static void save(string[] args, string text)
+
+        /// <summary>
+        /// Generates filename from arguments and saves text.
+        /// </summary>
+        /// <param name="args">Arguments from the executable call.</param>
+        /// <param name="text">Text from clipboard to be saved.</param>
+        /// <returns>Saved filename.</returns>
+        public static string save(string[] args, string text)
         {
             if (args.Count() == 0)
             {
@@ -50,7 +57,7 @@ namespace SaveClipboard
                     _extension = "txt";
 
                     // this allows the user to call "savecp code.txt"
-                    if (_arguments.ContainsKey(ArgumentType.name))
+                    if (_arguments.ContainsKey(ArgumentType.name) && _arguments[ArgumentType.name].Contains("."))
                     {
                         _extension = getExtensionFromName(_arguments[ArgumentType.name]);
                     }
@@ -74,8 +81,9 @@ namespace SaveClipboard
 
             // save the file and notify the console.
             File.WriteAllText($"{_fileName}.{_extension}", text);
-            UI.savedFileNotification($"{_fileName}.{_extension}");
+            return $"{_fileName}.{_extension}";
         }
+
 
         #region Validations
         /// <summary>
